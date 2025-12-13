@@ -1,0 +1,6 @@
+PORT=3000
+MONGO_URI=mongodb://127.0.0.1:27017/CHAT_APP_GUP_SUP
+JWT_SECRET=fkwjnfkjngjkrgjnjfknwjbngj43897927390jnfkekjnvlknoi219u040327892659836y2feiubui
+JWT_EXPIRE=3d
+COOKIE_EXPIRE=2
+CLIENT_URL=http://localhost:5173
