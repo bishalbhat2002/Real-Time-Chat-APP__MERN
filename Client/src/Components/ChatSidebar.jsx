@@ -4,6 +4,9 @@ import { IoSearch, IoLogOut } from "react-icons/io5";
 import User from "./User";
 import { useDispatch, useSelector } from "react-redux";
 import { logoutUserThunk } from "../store/features/user/user.thunk";
+import {useGSAP} from "@gsap/react";
+import {gsap} from "gsap";
+
 
 const ChatSidebar = () => {
   const dispatch = useDispatch();
@@ -39,9 +42,19 @@ const ChatSidebar = () => {
     }
   }, [searchValue, otherUsers]);
 
+    useGSAP(()=>{
+    gsap.from(".logo", {
+      opacity:0,
+      y:20,
+      duration:0.7,
+    });
+  }, )
+
+
+
   return (
-    <section className={`bg-zinc-800 h-full w-full sm:w-[20rem] ${selectedUser ? "hidden" : "flex"} sm:flex flex-col border-r-1 border-r-gray-500`}>
-      <h1 className="text-4xl font-extrabold bg-zinc-700 text-orange-400 text-center pb-3 pt-2 m-2 rounded-md ">
+    <section className={`overflow-hidden bg-zinc-800 h-full w-full sm:w-[20rem] ${selectedUser ? "hidden" : "flex"} sm:flex flex-col border-r-1 border-r-gray-500`}>
+      <h1 className="logo text-4xl font-extrabold bg-zinc-700 text-orange-400 text-center pb-3 pt-2 m-2 rounded-md ">
         CHAT APP
       </h1>
 
@@ -62,12 +75,12 @@ const ChatSidebar = () => {
         {usersLoader && <div className="h-full w-full p-5"> loading...</div>}
 
         {!usersLoader && filteredUsers?.map((userDetails) => {
-            return <User key={userDetails._id} userDetails={userDetails} />;
+            return <User key={userDetails._id} userDetails={userDetails} className="user" />;
           })}
       </div>
 
       {userProfile && (
-        <div className="h-[5rem] bg-gray-700 m-2 rounded-md flex justify-between items-center p-3">
+        <div className="user-profile h-[5rem] bg-gray-700 m-2 rounded-md flex justify-between items-center p-3">
           <div className="flex gap-3">
             <div className="avatar">
               <img

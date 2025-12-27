@@ -8,6 +8,8 @@ import {
 } from "../store/features/message/message.thunk";
 import { RxCross2 } from "react-icons/rx";
 import { setSelectedUserNull } from "../store/features/user/user.slice";
+import {useGSAP} from "@gsap/react";
+import {gsap} from "gsap";
 
 
 const MessageContainer = () => {
@@ -47,16 +49,28 @@ const MessageContainer = () => {
     // alert("user unselected");
   }
 
+  useGSAP(()=>{
+    gsap.from(".welcome-message", {
+      opacity:0,
+      y:20,
+      delay:0.7,
+      duration:0.7,
+      stagger:0.6
+    });   
+
+  }, [])
+
+
 
   return (
     <section className={`bg-zinc-800 h-full w-full ${selectedUser?"":"hidden"} sm:flex flex-col`}>
     {
       !selectedUser &&
             <div className={`h-full w-full ${selectedUser ? "" : "hidden"} sm:flex flex-col justify-center text-center items-center px-5`}>  
-              <h1 className="text-4xl font-extrabold text-slate-400">
+              <h1 className="welcome-message text-4xl font-extrabold text-slate-400">
                 Welcome to CHAT APP
               </h1>
-              <p className="text-lg font-bold text-slate-500">
+              <p className="welcome-message text-lg font-bold text-slate-500">
                 Please Select User to Chat...
               </p>
             </div>
@@ -87,7 +101,7 @@ const MessageContainer = () => {
             <Message key={messageDetails._id} messageDetails={messageDetails} />
           ))
         ) : (
-          <div className="h-full w-full flex justify-center items-center text-gray-400 text-center">
+          <div className="no-messages-indicator h-full w-full flex justify-center items-center text-gray-400 text-center">
             No messages yet
           </div>
         )}

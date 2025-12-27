@@ -4,6 +4,8 @@ import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux"
 import { signupUserThunk } from "../../store/features/user/user.thunk";
 import { toast } from "react-toastify";
+import { useGSAP } from "@gsap/react";
+import {gsap} from "gsap"
 
 const Signup = () => {
 
@@ -46,11 +48,22 @@ const Signup = () => {
 //   console.log(signupData);
 // }, [signupData]);
 
+
+  useGSAP(()=>{
+    gsap.from(".signup", {
+      opacity:0,
+      y:30,
+      duration:0.7,
+      scale:0.99
+    })
+  }, [])
+
+
   return (
     <section className="h-screen w-screen flex justify-center items-center">
       <form
         action=""
-        className="min-w-[20rem] w-120 bg-zinc-700 rounded-md flex flex-col p-5"
+        className="signup min-w-[20rem] w-120 bg-zinc-700 rounded-md flex flex-col p-5"
       >
         <h1 className="text-3xl font-bold text-center mb-3">Signup</h1>
 
