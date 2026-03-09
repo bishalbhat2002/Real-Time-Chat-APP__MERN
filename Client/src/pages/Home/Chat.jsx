@@ -24,43 +24,52 @@ const Chat = () => {
     dispatch(getUserProfileThunk());
     dispatch(getOtherUsersThunk());
   }, [dispatch, isAuthenticated]);
-   
-  
+
   useEffect(() => {
     dispatch(initalizeSocket(userProfile?._id));
   }, [isAuthenticated]);
-  
 
   useEffect(() => {
     if (!socket) return;
-    console.log("socket is set")
-    socket.on("onlineUsers", (onlineUsers) => {
-      if(onlineUsers){
+
+    console.log("socket is set");
+
+    const handleOnlineUsers = (onlineUsers) => {
+      if (onlineUsers) {
         dispatch(setOnlineUsers(onlineUsers));
-        // console.log("onlineUsers", onlineUsers)
       }
-    }).on("newMessage", async (newMessage) => {
+    };
+
+    const handleNewMessage = async (newMessage) => {
       if (selectedUser?._id === newMessage?.senderId) {
-        console.log("if part")
+        console.log("if part");
         dispatch(appendMessages(newMessage));
       } else {
-        console.log("else part")
+        console.log("else part");
         const msgSendername = await getName(newMessage?.senderId);
-        if(msgSendername){
+        if (msgSendername) {
           toast.success(`${msgSendername} send a New Message`);
         }
       }
-    });
+    };
 
+    socket.on("onlineUsers", handleOnlineUsers);
+    socket.on("newMessage", handleNewMessage);
+
+    // cleanup
+    return () => {
+      socket.off("onlineUsers", handleOnlineUsers);
+      socket.off("newMessage", handleNewMessage);
+    };
   }, [socket, selectedUser]);
 
-  const getName = async (userId)=>{
-    console.log(otherUsers)
-    const name =  await otherUsers?.find(user=>user?._id===userId).fullName;
+  const getName = async (userId) => {
+    console.log(otherUsers);
+    const name = await otherUsers?.find((user) => user?._id === userId)
+      .fullName;
     // console.log(name);
     return name;
-  }
-
+  };
 
   return (
     <div className="flex h-screen w-screen">
